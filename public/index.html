@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfolio Generator</title>
+</head>
+<body>
+  <!-- First window for input -->
+  <div id="inputSection">
+    <h2>Input Your Portfolio Details</h2>
+    <textarea
+      id="portfolioInput"
+      rows="10"
+      cols="50"
+      placeholder="Enter your portfolio details..."
+    ></textarea>
+  </div>
+
+  <!-- Second window for displaying portfolio -->
+  <div id="outputSection">
+    <h2>Generated Portfolio</h2>
+    <div id="generatedPortfolio"></div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    const portfolioInput = document.getElementById("portfolioInput");
+    const generatedPortfolio = document.getElementById("generatedPortfolio");
+
+    portfolioInput.addEventListener("input", () => {
+      const portfolioData = portfolioInput.value;
+      generatedPortfolio.innerText = portfolioData;
+      socket.emit("portfolioData", portfolioData);
+    });
+
+    socket.on("updatePortfolio", (data) => {
+      generatedPortfolio.innerText = data;
+    });
+  </script>
+</body>
+</html>
